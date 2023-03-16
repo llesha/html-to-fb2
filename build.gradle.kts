@@ -1,5 +1,6 @@
 plugins {
     kotlin("multiplatform") version "1.7.10"
+    id("java")
 }
 
 group = "llesha"
@@ -11,13 +12,43 @@ repositories {
 
 kotlin {
     jvm {
-        compilations.all {
-            kotlinOptions.jvmTarget = "1.8"
+        compilations {
+            //kotlinOptions.jvmTarget = "1.8"
+            val main = getByName("main")
+            tasks {
+                register<Copy>("unzip") {
+                    group = "library"
+
+                    val targetDir = File(buildDir, "3rd-libs")
+                    project.delete(files(targetDir))
+                    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+                    main.compileDependencyFiles.forEach {
+                        println(it)
+                        from(zipTree(it))
+                        into(targetDir)
+
+                    }
+                }
+                register<Jar>("fatJar") {
+                    group = "library"
+                    manifest {
+                        attributes["Implementation-Title"] = "Fat Jar"
+                        attributes["Implementation-Version"] = archiveVersion
+                        attributes["Main-Class"] = "MainKt"
+                    }
+                    archiveBaseName.set("${project.name}-fat")
+                    val thirdLibsDir = File(buildDir, "3rd-libs")
+                    from(main.output.classesDirs, thirdLibsDir)
+                    with(jar.get() as CopySpec)
+                }
+            }
+            tasks.getByName("fatJar").dependsOn("unzip")
         }
         testRuns["test"].executionTask.configure {
             useJUnit()
         }
     }
+
     js(IR) {
         browser {
             commonWebpackConfig {

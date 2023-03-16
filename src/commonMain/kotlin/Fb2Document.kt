@@ -1,7 +1,7 @@
 import core.*
 import utils.Date
 
-class Fb2Document(private val indexUrl: String) {
+class Fb2Document(private val indexUrl: String, private val path: String) {
     private val currentText = WriteStream("C:\\Users\\alex\\Desktop\\book.fb2")
 
     private val links = mutableSetOf<String>()
