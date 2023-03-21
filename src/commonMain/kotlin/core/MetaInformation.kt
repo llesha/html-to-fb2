@@ -1,7 +1,7 @@
 package core
 
 class MetaInformation(private val head: TraversableElement) {
-    val title = head.getChildren().find { it.getTag() == "title" }?.getText()
+    val title = head.getChildren().find { it.getTag() == "title" }?.getText()?.first
 
     val author = findValue("author")
     val description = findValue("description")

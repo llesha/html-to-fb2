@@ -5,12 +5,13 @@ object Constants {
     var charset = "UTF-8"
     var bufferSize = 1000
     var language = "en"
-    var withLinks = true
+    var linkLevel = -1
     var withImages = true
+    var currentSite = ""
 
-    fun getAddedTags():Set<String>{
+    fun getAddedTags(): Set<String> {
         val res = (textTags + addedTags).toMutableSet()
-        if(withImages)
+        if (withImages)
             res.add("image")
         return res
     }

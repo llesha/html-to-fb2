@@ -37,6 +37,7 @@ class XmlBuilder {
         for (attr in attributes)
             content.append(" ").append(attr)
         content.append(">")
+        tags.add(tag)
         return this
     }
 
@@ -44,6 +45,12 @@ class XmlBuilder {
 
     fun clearWithoutTags(): XmlBuilder {
         content.clear()
+        return this
+    }
+
+    fun clearAll():XmlBuilder {
+        content.clear()
+        tags.clear()
         return this
     }
 
