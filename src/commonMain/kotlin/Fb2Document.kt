@@ -34,8 +34,7 @@ class Fb2Document(private val indexUrl: Url, path: String) {
     private fun setCurrentSite(path: String) {
         val trimmed = path.removePrefix("https://").removePrefix("http://")
         val indexOfSlash = trimmed.indexOf("/")
-        Constants.currentSite =
-            "https://" + (if (indexOfSlash == -1) trimmed else trimmed.substring(0, indexOfSlash)) + "/"
+        Constants.currentSite = "https://" + (if (indexOfSlash == -1) trimmed else trimmed.substring(0, indexOfSlash))
     }
 
     private fun traverseHtml(url: Url, level: Int) {
@@ -50,20 +49,12 @@ class Fb2Document(private val indexUrl: Url, path: String) {
         this.binaries.addAll(binaries)
         links.addAll(htmlLinks)
         val tree = linkSetToTree(links)
+        val links = HtmlTranslator(url,currentText).getLinks()
+        val it = tree.getPathsAlphabetically(StringBuilder())
+        for(i in it)
+            println(i)
         println(this.links.joinToString(separator = "\n"))
 
-//        for (url in htmlLinks) {
-//            bodyBuilder.clearAll().addTagWithAttributes("section", "id=\"${url.getPageUrl()}\"")
-//            currentText.add(bodyBuilder.getResult())
-//            HtmlTranslator(url, currentText).translateToFb2()
-//            currentText.add(bodyBuilder.clearWithoutTags().closeTag().getResult())
-//        }
-        currentText.add("<image l:href=\"#img1\"></body>")
-        ImageGetter().getImage("https://www.yegor256.com/images/face-256x256.jpg")
-        currentText.add(XmlBuilder().addTagWithAttributes("binary", "content-type=\"image/jpeg\"",
-        "id=\"img1\"").getResult())
-        currentText.add(ReadStream("..\\binaries"))
-        currentText.add("</binary>")
     }
 
     private fun createDescription(meta: MetaInformation) {

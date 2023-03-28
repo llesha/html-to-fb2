@@ -8,6 +8,7 @@ object Constants {
     var linkLevel = -1
     var withImages = true
     var currentSite = ""
+    var isTree = false
 
     fun getAddedTags(): Set<String> {
         val res = (textTags + addedTags).toMutableSet()

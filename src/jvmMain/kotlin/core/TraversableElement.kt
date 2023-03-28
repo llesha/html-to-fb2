@@ -1,8 +1,8 @@
 package core
 
+import Constants
 import org.jsoup.nodes.Element
 import org.jsoup.nodes.TextNode
-import utils.addSite
 import utils.removeHashFromUrl
 import utils.removeProtocol
 
@@ -35,9 +35,11 @@ actual class TraversableElement actual constructor(content: Any?) {
             "sub", "sup", "code", "p" -> res.addTag(element.tagName())
             "del" -> res.addTag("strikethrough")
             "a" -> {
-                val linkValue = element.attributes().get("href").removeProtocol().removeHashFromUrl().addSite()
-                res.addTagWithAttributes("a", "l:href=\"#$linkValue\"")
-                links.add(linkValue)
+                val linkValue = getLinkFromATag(element)
+                if (!linkValue.contains(".")) {
+                    res.addTagWithAttributes("a", "l:href=\"#${linkValue.removePrefix(Constants.currentSite)}\"")
+                    links.add(linkValue)
+                } else res.addTagWithAttributes("a", "l:href=\"$linkValue\"")
             }
             else -> addedTag = false
         }
@@ -47,6 +49,10 @@ actual class TraversableElement actual constructor(content: Any?) {
             res.closeTag()
 
         return Triple(res.toString(), links, hasText)
+    }
+
+    private fun getLinkFromATag(element: Element): String {
+        return element.attributes().get("href").removeProtocol().removeHashFromUrl()
     }
 
     private fun getChildrenTexts(xmlBuilder: XmlBuilder): Pair<List<String>, Boolean> {
@@ -71,5 +77,18 @@ actual class TraversableElement actual constructor(content: Any?) {
             }
         }
         return links to hasText
+    }
+
+    actual fun getLinks(): MutableSet<String> {
+        val linkSet = mutableSetOf<String>()
+        if (element.tagName() == "a") {
+            val linkValue = getLinkFromATag(element)
+            if (!linkValue.contains("."))
+                linkSet.add(linkValue)
+        }
+        for (e in this.element.children())
+            linkSet.addAll(TraversableElement(e).getLinks())
+
+        return linkSet
     }
 }

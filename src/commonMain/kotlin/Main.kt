@@ -9,6 +9,7 @@ fun main(args: Array<String>) {
             "-i" -> Constants.withImages = getBoolean(name, value)
             "-c" -> Constants.charset = value
             "-b" -> Constants.bufferSize = value.toInt()
+            "-t" -> Constants.isTree = getBoolean(name, value)
             else -> {
                 printHelp()
                 return
@@ -37,12 +38,13 @@ Arguments are listed in format <NAME> <VALUE>
 Arguments:
     -u - url of converted page
     -p [result.fb2] - path to generated fb2
-    -l [-1] - add links in fb2 in this domain. -1 to add all found links, 
-    0 to add only starting page,
-    n > 0 to add all pages reachable from starting with not more than n link clicks
-    -t true/[false] - structure document like a tree with urls. Setting to `true` will make it run 2 times slower.
+    -l [-1] - add links in fb2 in this domain.
+        -1 to add all found links, 
+        0 to add only starting page, 
+        n > 0 to add all pages reachable from starting with not more than n link clicks
+    -t true/[false] - structure document like a tree with urls. Setting to `true` will make it run ~2 times slower, but guarantees section sorting
     -i true/[false] - add images to fb2
     -c [UTF-8] - used charset
-    -b [1000] - stream buffer size. Bigger for faster conversion, smaller if not enough memory."""
+    -b [1000] - stream buffer size. Bigger for faster conversion, smaller if not enough memory"""
     )
 }

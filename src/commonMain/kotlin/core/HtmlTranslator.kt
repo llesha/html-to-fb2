@@ -4,6 +4,7 @@ import Constants
 import Constants.ignoredTags
 import tags.TagFactory
 import utils.getPageUrl
+import utils.linkSetToTree
 
 class HtmlTranslator(private val url: String, stream: WriteStream) {
     private val fb2Text = stream
@@ -29,6 +30,13 @@ class HtmlTranslator(private val url: String, stream: WriteStream) {
         traverseElement(element)
 
         return Pair(collectedLinks, listOf())
+    }
+
+    fun getLinks(): MutableList<String> {
+        val (_, element) = XmlParser().parseFromLink(url)
+        val res = mutableListOf("")
+        res.addAll(linkSetToTree(element.getLinks()).getPathsAlphabetically())
+        return res
     }
 
     fun traverseElement(element: TraversableElement) {

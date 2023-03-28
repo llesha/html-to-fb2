@@ -16,4 +16,8 @@ actual class TraversableElement actual constructor(content: Any?) {
     actual fun getAttributes(): Map<String, String> {
         TODO("Not yet implemented")
     }
+
+    actual fun getLinks(): MutableSet<String> {
+        TODO("Not yet implemented")
+    }
 }
