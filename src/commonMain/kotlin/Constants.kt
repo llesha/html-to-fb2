@@ -1,5 +1,5 @@
 object Constants {
-    val textTags = setOf("p", "strong", "b", "i", "em", "a")
+    val textTags = setOf("p", "strong", "b", "i", "em", "a", "table", "div", "pre")
     private val addedTags = setOf<String>()
     val ignoredTags = setOf("button")
     var charset = "UTF-8"

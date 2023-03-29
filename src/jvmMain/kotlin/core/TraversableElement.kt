@@ -3,6 +3,7 @@ package core
 import Constants
 import org.jsoup.nodes.Element
 import org.jsoup.nodes.TextNode
+import utils.addSite
 import utils.removeHashFromUrl
 import utils.removeProtocol
 
@@ -30,23 +31,11 @@ actual open class TraversableElement actual constructor(content: Any?) {
         val links = mutableSetOf<String>()
         var addedTag = true
         when (element.tagName()) {
-            "bold", "b", "strong" -> res.addTag("strong")
+            "bold", "b", "strong", "style" -> res.addTag("strong")
             "em", "i" -> res.addTag("emphasis")
-            "sub", "sup", "code", "p" -> res.addTag(element.tagName())
+            "sub", "sup", "code", "p", "tr", "td", "th", "table"-> res.addTag(element.tagName())
             "del" -> res.addTag("strikethrough")
-            "a" -> {
-                val linkValue = getLinkFromATag(element)
-                if (!linkValue.contains(".")) {
-                    res.addTagWithAttributes(
-                        "a", "l:href=\"#${
-                            linkValue
-                                .removePrefix(Constants.currentSite)
-                                .replace("\"", "&quot;")
-                        }\""
-                    )
-                    links.add(linkValue)
-                } else res.addTagWithAttributes("a", "l:href=\"${linkValue.replace("\"", "&quot;")}\"")
-            }
+            "a" -> processATag(element, res, links)
             else -> addedTag = false
         }
         val (childLinks, hasText) = getChildrenTexts(res)
@@ -59,6 +48,20 @@ actual open class TraversableElement actual constructor(content: Any?) {
 
     private fun getLinkFromATag(element: Element): String {
         return element.attributes().get("href").removeProtocol().removeHashFromUrl()
+    }
+
+    private fun processATag(element: Element, res: XmlBuilder, links: MutableSet<String>) {
+        val linkValue = getLinkFromATag(element)
+        if (!linkValue.contains(".")) {
+            res.addTagWithAttributes(
+                "a", "l:href=\"#${
+                    linkValue
+                        .removePrefix(Constants.currentSite)
+                        .replace("\"", "&quot;")
+                }\""
+            )
+            links.add(linkValue)
+        } else res.addTagWithAttributes("a", "l:href=\"${linkValue.replace("\"", "&quot;")}\"")
     }
 
     private fun getChildrenTexts(xmlBuilder: XmlBuilder): Pair<List<String>, Boolean> {
