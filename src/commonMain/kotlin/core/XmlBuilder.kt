@@ -48,7 +48,7 @@ class XmlBuilder {
         return this
     }
 
-    fun clearAll():XmlBuilder {
+    fun clearAll(): XmlBuilder {
         content.clear()
         tags.clear()
         return this

@@ -1,6 +1,5 @@
 package tags
 
-import Constants
 import core.HtmlTranslator
 import core.TraversableElement
 

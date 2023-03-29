@@ -1,6 +1,6 @@
 package core
 
-expect class TraversableElement(content: Any? = null) {
+expect open class TraversableElement(content: Any? = null) {
 
     fun getChildren(): List<TraversableElement>
     fun getTag(): String

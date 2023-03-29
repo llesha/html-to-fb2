@@ -1,12 +1,12 @@
 package utils
 
-typealias Url = String
+typealias Link = String
 
-fun Url.removeProtocol(): Url {
+fun Link.removeProtocol(): Link {
     return this.removePrefix("https://").removePrefix("http://")
 }
 
-fun Url.getSite(): Url {
+fun Link.getSite(): Link {
     val urlWithoutProtocol = this.removeProtocol()
     return urlWithoutProtocol.substring(0, urlWithoutProtocol.indexOf("/"))
 }
@@ -15,11 +15,11 @@ fun Url.getSite(): Url {
  * Converts https://llesha.github.io/regina/syntax#top-level-declarations
  * to regina/syntax
  */
-fun Url.getPageUrl(): Url {
+fun Link.getPageUrl(): Link {
     return this.removeProtocol().removeSite().removeHashFromUrl()
 }
 
-fun Url.addSite(): Url {
+fun Link.addSite(): Link {
     val res = StringBuilder(this)
     if (!res.contains("."))
         res.insert(0, Constants.currentSite)
@@ -30,11 +30,11 @@ fun Url.addSite(): Url {
 /**
  * Do it after removing protocol
  */
-private fun Url.removeSite(): Url {
+private fun Link.removeSite(): Link {
     return this.substring(this.indexOf("/") + 1)
 }
 
-fun Url.removeHashFromUrl(): Url {
+fun Link.removeHashFromUrl(): Link {
     val indexOfHash = this.indexOf("#")
     return (if (indexOfHash == -1) this else this.substring(0, indexOfHash)).removeSuffix("/").removeSuffix(".html")
 }

@@ -1,6 +1,6 @@
 package core
 
-actual class TraversableElement actual constructor(content: Any?) {
+actual open class TraversableElement actual constructor(content: Any?) {
     actual fun getChildren(): List<TraversableElement> {
         return listOf()
     }

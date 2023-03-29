@@ -7,19 +7,25 @@ import kotlin.test.assertEquals
 class UrlTest {
     @Test
     fun removeProtocolTest() {
-        assertEquals("https://llesha.github.io/regina/syntax/#top-level-declarations".removeProtocol(),
-        "llesha.github.io/regina/syntax/#top-level-declarations")
+        assertEquals(
+            "https://llesha.github.io/regina/syntax/#top-level-declarations".removeProtocol(),
+            "llesha.github.io/regina/syntax/#top-level-declarations"
+        )
     }
 
     @Test
     fun getSiteTest() {
-        assertEquals("https://llesha.github.io/regina/syntax/#top-level-declarations".getSite(),
-        "llesha.github.io")
+        assertEquals(
+            "https://llesha.github.io/regina/syntax/#top-level-declarations".getSite(),
+            "llesha.github.io"
+        )
     }
 
     @Test
     fun getPageUrlTest() {
-        assertEquals("https://llesha.github.io/regina/syntax/#top-level-declarations".getPageUrl(),
-        "regina/syntax")
+        assertEquals(
+            "https://llesha.github.io/regina/syntax/#top-level-declarations".getPageUrl(),
+            "regina/syntax"
+        )
     }
 }

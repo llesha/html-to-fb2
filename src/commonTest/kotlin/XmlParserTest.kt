@@ -35,7 +35,7 @@ class XmlParserTest {
     }
 
     @Test
-    fun parseFragmentWithUnclosedTag(){
+    fun parseFragmentWithUnclosedTag() {
         val text = """
             <p><img src="https://i.ytimg.com/vi/PJAzfQtxby4/mqdefault.jpg" 
             class="past-talk" alt="code/R 2021"> 

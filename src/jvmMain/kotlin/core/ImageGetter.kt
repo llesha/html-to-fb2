@@ -5,8 +5,8 @@ import java.net.URL
 import java.util.*
 
 actual class ImageGetter actual constructor() {
-    actual fun getImage(url: String) {
-        val javaUrl = URL(url)
+    actual fun getImage(link: String) {
+        val javaUrl = URL(link)
         val inputStream = javaUrl.openStream()
         val path = "..\\binaries"
         File(path).createNewFile()

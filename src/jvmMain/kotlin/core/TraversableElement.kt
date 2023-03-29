@@ -6,7 +6,7 @@ import org.jsoup.nodes.TextNode
 import utils.removeHashFromUrl
 import utils.removeProtocol
 
-actual class TraversableElement actual constructor(content: Any?) {
+actual open class TraversableElement actual constructor(content: Any?) {
     private val element: Element
 
     init {
@@ -37,9 +37,15 @@ actual class TraversableElement actual constructor(content: Any?) {
             "a" -> {
                 val linkValue = getLinkFromATag(element)
                 if (!linkValue.contains(".")) {
-                    res.addTagWithAttributes("a", "l:href=\"#${linkValue.removePrefix(Constants.currentSite)}\"")
+                    res.addTagWithAttributes(
+                        "a", "l:href=\"#${
+                            linkValue
+                                .removePrefix(Constants.currentSite)
+                                .replace("\"", "&quot;")
+                        }\""
+                    )
                     links.add(linkValue)
-                } else res.addTagWithAttributes("a", "l:href=\"$linkValue\"")
+                } else res.addTagWithAttributes("a", "l:href=\"${linkValue.replace("\"", "&quot;")}\"")
             }
             else -> addedTag = false
         }

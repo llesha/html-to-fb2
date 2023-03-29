@@ -1,8 +1,8 @@
 package core
 
-import utils.Url
+import utils.Link
 
 actual class ImageGetter actual constructor() {
-    actual fun getImage(url: Url) {
+    actual fun getImage(link: Link) {
     }
 }

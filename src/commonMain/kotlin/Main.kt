@@ -1,9 +1,9 @@
 fun main(args: Array<String>) {
-    var url: String? = null
+    var link: String? = null
     var path = "result.fb2"
     args.toList().zipWithNext { name, value ->
         when (name) {
-            "-u" -> url = value
+            "-u" -> link = value
             "-p" -> path = value
             "-l" -> Constants.linkLevel = value.toInt()
             "-i" -> Constants.withImages = getBoolean(name, value)
@@ -16,11 +16,11 @@ fun main(args: Array<String>) {
             }
         }
     }
-    if (url == null) {
+    if (link == null) {
         printHelp()
         return
     }
-    Fb2Document(url!!, path).create()
+    Fb2Document(link!!, path).create()
 }
 
 private fun getBoolean(name: String, value: String): Boolean {
